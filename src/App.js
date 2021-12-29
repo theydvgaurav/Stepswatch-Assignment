@@ -101,12 +101,12 @@ const App = () => {
                         if (data.length === index + 1) {
                             return (
                                 <div ref={lastRecordRef} >
-                                    <DetailsCard item={itemDetails} index={index} />
+                                    <DetailsCard item={itemDetails} />
                                 </div>)
                         }
 
                         else {
-                            return (<DetailsCard item={itemDetails} index={index} />)
+                            return (<DetailsCard item={itemDetails} />)
                         }
                     })
                 }

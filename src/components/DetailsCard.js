@@ -5,7 +5,7 @@ const DetailsCard = (props) => {
     return (
         <div className='maincontainer' >
             <div className='divContainer'>
-                <div className='divItems title' key={props.item} >{props.item.title}</div>
+                <div className='divItems title' >{props.item.title}</div>
             </div>
         </div>
     )

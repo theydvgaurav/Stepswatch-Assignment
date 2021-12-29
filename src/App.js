@@ -11,7 +11,7 @@ const App = () => {
     const [moreRecords, setMoreRecords] = useState(false);
     const [data, setData] = useState([])
 
-    const url = `https://openlibrary.org/search.json?q=${name}&page=${page}&limit=20`
+    const url = `https://openlibrary.org/search.json?q=${name}&page=${page}&limit=100`
 
     useEffect(() => {
         setLoading(true);
@@ -21,20 +21,24 @@ const App = () => {
             redirect: 'follow'
         };
 
-        fetch(url, requestOptions)
-            .then(response => response.json())
-            .then(result => {
-                setData(data.concat(result.docs))
-                setLoading(false);
-                if (result.numFound - result.start > 0)
-                    setMoreRecords(true)
-            })
-            .catch(error => setError(error));
+
+            fetch(url, requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    setData(data.concat(result.docs))
+                    setLoading(false);
+                    if (result.numFound - result.start > 100)
+                        setMoreRecords(true)
+                    else
+                        setMoreRecords(false)
+                })
+                .catch(error => setError(error));
+            
     }, [page]);
 
-    useEffect(()=>{
+    useEffect(() => {
         setData([])
-    },[name])
+    }, [name])
 
 
     const Ref = useRef()
@@ -56,7 +60,6 @@ const App = () => {
     const getData = (event) => {
         event.preventDefault();
         setLoading(true);
-        setData([])
 
         var requestOptions = {
             method: 'GET',
@@ -70,8 +73,10 @@ const App = () => {
                 setData(result.docs)
                 setLoading(false);
 
-                if (result.numFound - result.start > 0)
+                if (result.numFound - result.start > 100)
                     setMoreRecords(true)
+                else
+                    setMoreRecords(false)
             })
             .catch(error => setError(error));
     }
@@ -96,12 +101,12 @@ const App = () => {
                         if (data.length === index + 1) {
                             return (
                                 <div ref={lastRecordRef} >
-                                    <DetailsCard item={itemDetails} />
+                                    <DetailsCard item={itemDetails} index={index} />
                                 </div>)
                         }
 
                         else {
-                            return (<DetailsCard item={itemDetails} />)
+                            return (<DetailsCard item={itemDetails} index={index} />)
                         }
                     })
                 }
